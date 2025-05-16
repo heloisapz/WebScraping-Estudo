@@ -85,39 +85,39 @@ try:
         voos = navegador.find_elements(By.CLASS_NAME, "header")
         print(f"Encontrados {len(voos)} voos.")
 
-        for idx, voo in enumerate(voos, start=1):
+        for voo in voos:
             try:
                 info = voo.find_element(By.CLASS_NAME, "info")
 
-                companhia = info.find_element(By.CSS_SELECTOR, "p.company-and-seat > span.company").text
+                nome = info.find_element(By.CSS_SELECTOR, "p.company-and-seat > span.company").text
                 classe = info.find_element(By.CSS_SELECTOR, "p.company-and-seat > span.seat").text
 
                 horarios = info.find_elements(By.CLASS_NAME, "iata-code")
                 horaSaida = horarios[0].text if len(horarios) > 0 else "Não informado"
                 horaChegada = horarios[1].text if len(horarios) > 1 else "Não informado"
 
-                duracao_el = voo.find_elements(By.CLASS_NAME, "scale-duration__time")
-                duracao = duracao_el[0].text if duracao_el else "Não informado"
+                duracaoEl = voo.find_elements(By.CLASS_NAME, "scale-duration__time")
+                duracao = duracaoEl[0].text if duracaoEl else "Não informado"
 
-                preco_el = voo.find_elements(By.CLASS_NAME, "miles")
-                preco = preco_el[0].text if preco_el else "Não informado"
+                precoEl = voo.find_elements(By.CLASS_NAME, "miles")
+                preco = precoEl[0].text if precoEl else "Não informado"
 
                 dadosVoos.append({
-                    "dia_pesquisado": proximoDia.strftime("%d/%m/%Y"),
-                    "companhia": companhia,
+                    "dia": proximoDia.strftime("%d/%m/%Y"),
+                    "nome": nome,
                     "classe": classe,
                     "horaSaida": horaSaida,
                     "horaChegada": horaChegada,
-                    "duracao_voo": duracao,
+                    "duracao": duracao,
                     "preco": preco
                 })
 
             except Exception as e:
-                print(f"Erro ao capturar voo {idx}: {str(e)}")
+                print(f"Erro ao capturar voo")
                 continue
 
     # Salvando os dados no arquivo JSON
-    with open("voos_smiles.json", "w", encoding='utf-8') as f:
+    with open("teste.json", "w", encoding='utf-8') as f:
         json.dump(dadosVoos, f, ensure_ascii=False, indent=2)
 
     print("\n✅ Dados salvos no arquivo 'voos_smiles.json'.")
